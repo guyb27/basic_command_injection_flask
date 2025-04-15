@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: pod1
+  labels:
+    name: pod1
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: pod2

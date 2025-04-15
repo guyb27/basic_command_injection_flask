@@ -1,0 +1,30 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ssh-vulnerable
+  namespace: pod2
+spec:
+  selector:
+    matchLabels:
+      app: ssh-vulnerable
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: ssh-vulnerable
+    spec:
+      containers:
+      - name: ssh-server
+        image: ubuntu:20.04
+        ports:
+        - containerPort: 22
+        command: ["/bin/bash", "-c"]
+        args:
+          - |
+            apt-get update && apt-get install -y openssh-server sudo net-tools iputils-ping
+            mkdir /var/run/sshd
+            echo 'root:password123' | chpasswd
+            sed -i 's/#PermitRootLogin prohibit-password/PermitRootLogin yes/' /etc/ssh/sshd_config
+            /usr/sbin/sshd -D
+        securityContext:
+          privileged: true

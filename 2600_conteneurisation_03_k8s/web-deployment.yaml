@@ -1,0 +1,62 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: web-vulnerable
+  namespace: pod1
+spec:
+  selector:
+    matchLabels:
+      app: web-vulnerable
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: web-vulnerable
+    spec:
+      containers:
+      - name: web-app
+        image: python:3.9-slim
+        ports:
+        - containerPort: 8080
+        command: ["/bin/bash", "-c"]
+        args:
+          - |
+            apt-get update && apt-get install -y sudo iputils-ping procps
+            echo "www-data ALL=(ALL) NOPASSWD: /usr/bin/python3" >> /etc/sudoers
+            pip install flask
+            cat > /app.py << 'EOFPY'
+            from flask import Flask, request
+            import subprocess
+            import os
+            app = Flask(__name__)
+            @app.route('/')
+            def home():
+                return '''
+                <html>
+                    <head><title>App Vulnérable</title></head>
+                    <body>
+                        <h1>Application Web Vulnérable</h1>
+                        <form action="/ping" method="GET">
+                            <label>Ping une adresse IP:</label>
+                            <input type="text" name="ip" placeholder="Entrez une adresse IP">
+                            <input type="submit" value="Ping">
+                        </form>
+                    </body>
+                </html>
+                '''
+            @app.route('/ping')
+            def ping():
+                ip = request.args.get('ip', '')
+                try:
+                    # Vulnérabilité: injection de commande
+                    cmd = f"ping -c 1 {ip}"
+                    result = subprocess.check_output(cmd, shell=True)
+                    return f"<pre>Commande: {cmd}\n\n{result.decode()}</pre>"
+                except Exception as e:
+                    return f"<pre>Erreur: {str(e)}</pre>"
+            if __name__ == '__main__':
+                app.run(host='0.0.0.0', port=8080, debug=True)
+            EOFPY
+            python /app.py
+        securityContext:
+          allowPrivilegeEscalation: true

@@ -1,0 +1,18 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: app-config
+  namespace: pod1
+data:
+  APP_ENV: "production"
+  DEBUG_MODE: "false"
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: app-secrets
+  namespace: pod1
+type: Opaque
+data:
+  api_key: YXBpLWtleS0xMjM0NTY=  # Base64 de "api-key-123456"
+  admin_password: YWRtaW5wYXNzMTIz  # Base64 de "adminpass123"

@@ -1,0 +1,19 @@
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: restrict-pod2-access
+  namespace: pod2
+spec:
+  podSelector:
+    matchLabels:
+      app: ssh-vulnerable
+  policyTypes:
+  - Ingress
+  ingress:
+  - from:
+    - namespaceSelector:
+        matchLabels:
+          name: pod1
+    ports:
+    - protocol: TCP
+      port: 22
