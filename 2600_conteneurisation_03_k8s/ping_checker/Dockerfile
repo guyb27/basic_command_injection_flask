@@ -1,3 +1,5 @@
+#docker build -t flask-ping-app .
+#docker run -p 5000:5000 flask-ping-app
 
 # Utilise une image de base légère avec Python
 FROM python:3.11-slim
