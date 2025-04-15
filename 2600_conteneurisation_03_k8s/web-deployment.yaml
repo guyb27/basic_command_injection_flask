@@ -25,7 +25,7 @@ spec:
              # Créer un utilisateur non-root
             useradd -m webuser
             # Configurer sudo pour permettre à webuser d'exécuter python sans mot de passe
-            echo "webuser ALL=(ALL) NOPASSWD: /usr/bin/python3" >> /etc/sudoers
+            echo "webuser ALL=(ALL) NOPASSWD: /usr/local/bin/python3" >> /etc/sudoers
             pip install flask
             cat > /app.py << 'EOFPY'
             from flask import Flask, request
