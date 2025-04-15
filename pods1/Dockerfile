@@ -14,7 +14,7 @@ RUN apt-get update && apt-get install -y \
 WORKDIR /app
 
 # Copier les fichiers du projet dans le conteneur
-COPY ./app.py /app/app.py
+COPY . /app/
 
 # Installer Flask
 RUN pip install --no-cache-dir flask
