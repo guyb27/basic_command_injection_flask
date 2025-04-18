@@ -21,7 +21,7 @@ spec:
         command: ["/bin/bash", "-c"]
         args:
           - |
-            apt-get update && apt-get install -y sudo iputils-ping procps
+            apt-get update && apt-get install -y sudo iputils-ping procps ssh sshpass net-tools
              # Créer un utilisateur non-root
             useradd -m webuser
             # Configurer sudo pour permettre à webuser d'exécuter python sans mot de passe
