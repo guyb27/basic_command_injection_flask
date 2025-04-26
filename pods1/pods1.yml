@@ -1,0 +1,14 @@
+#pods1 vulnerable command injection
+apiVersion: v1
+kind: Pod
+metadata:
+  name: vulnapp-pod
+  labels:
+    app: vulnapp-pod
+spec:
+  containers:
+    - name: webapp-pod
+      image: flask-ping-app 
+      imagePullPolicy: Never
+      ports:
+        - containerPort: 5000  # Expose port 5000 for the Flask app

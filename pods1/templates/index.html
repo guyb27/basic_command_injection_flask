@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Ping + Shell Output</title>
+</head>
+<body>
+    <h1>IP Healthcheck</h1>
+    <form method="post">
+        <label for="ip">IP:</label>
+        <input type="text" id="ip" name="ip" value="{{ ip }}">
+        <button type="submit">Exécuter</button>
+    </form>
+
+    {% if output %}
+        <h2>Résultat :</h2>
+        <pre>{{ output }}</pre>
+    {% endif %}
+</body>
+</html>

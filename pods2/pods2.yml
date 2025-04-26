@@ -1,0 +1,12 @@
+#pods2 vulnerable ssh
+apiVersion: v1
+kind: Pod
+metadata:
+  name: ssh-pod
+spec:
+  containers:
+    - name: ssh-container
+      image: ssh-ubuntu-low-password   # Replace with your SSH-enabled image
+      imagePullPolicy: Never
+      ports:
+        - containerPort: 22  # Expose port 22 for SSH access
